@@ -27,7 +27,7 @@ export default function App() {
         rovers were sent to roam around on Mars.
       </TextExpander>
 
-      <TextExpander expanded={false} className="box">
+      <TextExpander expanded={true} className="box">
         Space missions have given us incredible insights into our
         universe and have inspired future generations to keep reaching
         for the stars. Space travel is a pretty cool thing to think
@@ -50,16 +50,14 @@ function TextExpander({
   const handleOnClick = () => {
     setExpand(!expand);
   };
-  const text = React.Children.map(children, (child) => child).join(
-    ''
-  );
-  const words = text.split(/\s+/).filter((word) => word.length > 0);
-  const splitedWords = words.slice(0, collapsedNumWords).join(' ');
+  const splitWords =
+    children.split(' ').slice(0, collapsedNumWords).join(' ') +
+    '... ';
 
   return !expand ? (
     <div>
       <p className={className}>
-        {splitedWords}...{' '}
+        {splitWords}
         <span style={{ color: buttonColor }} onClick={handleOnClick}>
           {expandButtonText}
         </span>
