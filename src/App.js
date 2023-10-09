@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './index.css';
 
 export default function App() {
@@ -26,7 +27,7 @@ export default function App() {
         rovers were sent to roam around on Mars.
       </TextExpander>
 
-      <TextExpander expanded={true} className="box">
+      <TextExpander expanded={false} className="box">
         Space missions have given us incredible insights into our
         universe and have inspired future generations to keep reaching
         for the stars. Space travel is a pretty cool thing to think
@@ -36,6 +37,40 @@ export default function App() {
   );
 }
 
-function TextExpander() {
-  return <div>TODO</div>;
+function TextExpander({
+  children,
+  className,
+  collapsedNumWords = 10,
+  expanded = false,
+  expandButtonText = 'Show text',
+  collapseButtonText = 'Collapse text',
+  buttonColor = '#1110ff',
+}) {
+  const [expand, setExpand] = useState(expanded);
+  const handleOnClick = () => {
+    setExpand(!expand);
+  };
+  const text = React.Children.map(children, (child) => child).join(
+    ''
+  );
+  const words = text.split(/\s+/).filter((word) => word.length > 0);
+  const splitedWords = words.slice(0, collapsedNumWords).join(' ');
+
+  return !expand ? (
+    <div>
+      <p className={className}>
+        {splitedWords}...{' '}
+        <span style={{ color: buttonColor }} onClick={handleOnClick}>
+          {expandButtonText}
+        </span>
+      </p>
+    </div>
+  ) : (
+    <p className={className}>
+      {children}{' '}
+      <span style={{ color: buttonColor }} onClick={handleOnClick}>
+        {collapseButtonText}
+      </span>
+    </p>
+  );
 }
